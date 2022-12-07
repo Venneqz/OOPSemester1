@@ -141,4 +141,12 @@ public class MyList {
         }
         System.out.println("");
     }
+
+    public static int[] getList() {
+        return list;
+    }
+
+    public static void setList(int[] list) {
+        MyList.list = list;
+    }
 }
