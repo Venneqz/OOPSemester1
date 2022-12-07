@@ -1,6 +1,7 @@
 package Praktika.Praktika7.VerdrehteBilderTeil1;
 
 
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -15,7 +16,7 @@ public class Bild {
     int maxHelligkeit;
     String fileHeader;
 
-    public void leseBild(String dateiname) throws IOException {
+    void leseBild(String dateiname) throws IOException {
         try {
             // Read file
             Path path = Paths.get(dateiname);
@@ -49,7 +50,6 @@ public class Bild {
                         temp[i][j] = Integer.parseInt(numbers[j]); //parse the number to an int and put it in the temp array
                     }
                     catch (NumberFormatException e) {
-                        e.printStackTrace();
                     }
 
                 }
@@ -58,11 +58,14 @@ public class Bild {
 
         } catch (IOException e) {
             e.printStackTrace();
+            System.out.println("Cannot read file: " + dateiname);
+            System.exit(0);
         }
     }
 
     //Printer
-    public void printFile(int[][] daten) {
+    void printBild(int[][] daten) {
+        System.out.println("Ausgabe des Bildes: ");
         for (int i = 0; i < daten.length; i++) {
             for (int j = 0; j < daten[i].length; j++) {
                 System.out.print(daten[i][j] + " ");
@@ -105,6 +108,8 @@ public class Bild {
             System.out.println("File written to: " + file);
         } catch (IOException e) {
             e.printStackTrace();
+            System.out.println("Cannot write file: " + verzeichnis);
+            System.exit(0);
         }
     }
 

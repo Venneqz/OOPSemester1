@@ -10,30 +10,40 @@ public class PasswortGenerator {
 
 
     void erstellePasswort(String entry) {
-        password = entry;
-        String[] words = password.split(" "); //split the string into words
-        String firstLetters = ""; //for storing the first letters of each word
-        for (int i = 0; i < words.length; i++) {
-            if (i % 2 == 0) {
-                //get the first non-special character
-                for (int j = 0; j < words[i].length(); j++) {
-                    if (Character.isLetter(words[i].charAt(j))) {
-                        firstLetters = firstLetters + toLowerCase(words[i].charAt(j)); //make it lowercase
-                        break;
-                    }
-                }
-            }
-            else {
-                //get the first non-special character
-                for (int j = 0; j < words[i].length(); j++) {
-                    if (Character.isLetter(words[i].charAt(j))) {
-                        firstLetters = firstLetters + toUpperCase(words[i].charAt(j)); //make it uppercase
-                        break;
-                    }
-                }
-            }
+        //check if the entry is empty
+        if (entry.isEmpty()) {
+            System.out.println("The entry is empty!");
+            System.exit(0);
         }
-        passwordHelp = firstLetters;
+        try {
+            password = entry;
+            String[] words = password.split(" "); //split the string into words
+            String firstLetters = ""; //for storing the first letters of each word
+            for (int i = 0; i < words.length; i++) {
+                if (i % 2 == 0) {
+                    //get the first non-special character
+                    for (int j = 0; j < words[i].length(); j++) {
+                        if (Character.isLetter(words[i].charAt(j))) {
+                            firstLetters = firstLetters + toLowerCase(words[i].charAt(j)); //make it lowercase
+                            break;
+                        }
+                    }
+                }
+                else {
+                    //get the first non-special character
+                    for (int j = 0; j < words[i].length(); j++) {
+                        if (Character.isLetter(words[i].charAt(j))) {
+                            firstLetters = firstLetters + toUpperCase(words[i].charAt(j)); //make it uppercase
+                            break;
+                        }
+                    }
+                }
+            }
+            passwordHelp = firstLetters;
+        }
+        catch (Exception e) {
+            System.out.println("Ungültige Eingabe");
+        }
     }
 
 
@@ -44,7 +54,7 @@ public class PasswortGenerator {
     }
 
     void printPasswordHelp(String passwordHelp) {
-        System.out.println("Ausgabe der Passwrot-Hilfe: " + passwordHelp);
+        System.out.println("Ausgabe der Passwort-Hilfe: " + passwordHelp);
         System.out.println("");
     }
 
