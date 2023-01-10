@@ -3,7 +3,7 @@ package Praktika.Praktika6.Bruch;
 public class BruchTest {
     public static void main(String[] args) {
         Bruch bruch1 = new Bruch(2,2);
-        Bruch bruch2 = new Bruch(-1,-2);
+        Bruch bruch2 = new Bruch(-2,-2);
 
 
 
