@@ -1,12 +1,12 @@
-package Praktika.Praktika5.MyListTest;
+package Praktika.Praktika5.MyList;
 
-import Praktika.Praktika5.MyList.MyList;
 
 public class MyListTest {
     public static void main(String[] args) {
         MyList test = new MyList();
+        test.setList(new int[]{1, 2, 3});
         test.addToList(0, 0);
-        test.addToList(1,-1);
+        test.addToList(1,1);
         test.addToList(1,2);
         test.addToList(1,3);
         test.addToList(1,4);
