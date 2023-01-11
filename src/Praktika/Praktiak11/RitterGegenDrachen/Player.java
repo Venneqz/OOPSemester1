@@ -4,15 +4,14 @@ import java.awt.*;
 
 public abstract class Player {
     //attributes
-    int speed;
-    int intelligence;
-    int strength;
-    int x;
-    int y;
-    int movedX;
-    int movedY;
+    private int speed;
+    private int intelligence;
+    private int strength;
+    private int x;
+    private int y;
 
-     //constructor
+
+    //constructor
     public Player() {
         //speed random number between 6 and 8
         this.speed = (int) (Math.random() * 3) + 6;
@@ -81,7 +80,7 @@ public abstract class Player {
 
 
 
-    //Getters and Setters
+    //-------------------------getter and setter-------------------------
     public int getX(){
         //get the x coordinates of the player
         return x;

@@ -7,11 +7,11 @@ import java.awt.event.*;
 public class GUI implements MouseListener, KeyListener {
     //create the window
     static JFrame window;
-
     private static final int WIDTH = 700;
     private static final int HEIGHT = 550;
 
 
+    //create the panels
     JPanel rightSide = new JPanel(new BorderLayout());
     JPanel top = new JPanel(new GridLayout(2,5));
     JPanel bottom = new JPanel(new GridLayout(2,1));
@@ -23,18 +23,19 @@ public class GUI implements MouseListener, KeyListener {
     JPanel dragonStatus = new JPanel(new FlowLayout());
     JPanel info = new JPanel(new FlowLayout());
     JPanel action = new JPanel(new GridLayout(2,1));
-
+    //Labels for the right side
     JLabel knightLabel = new JLabel("Spielstärke des Ritters: ");
     JLabel dragonLabel = new JLabel("Spielstärke des Drachen: ");
     JLabel infoLabel = new JLabel("-");
     JLabel diceOutcome = new JLabel("Ergebnis des Würfels: ");
 
+    //dice button
     JButton diceButton = new JButton("Würfeln");
 
     //for drawing the board
     Board board = new Board();
 
-    //initializing the PLAYERS
+    //initializing the players
     static Player knight = new Knight();
     static Player dragon = new Dragon();
     static Player currentPlayer = knight;
@@ -45,7 +46,6 @@ public class GUI implements MouseListener, KeyListener {
     private int playerY;
     private int playerTile;
     private int clickedTile;
-    private int movesMade = 0;
     private boolean validMove = false;
     private static int mouseX;
     private static int mouseY;
@@ -100,11 +100,10 @@ public class GUI implements MouseListener, KeyListener {
         knightLabel.setText("Spielstärke des Ritters: " + knight.getStrength());
         dragonLabel.setText("Spielstärke des Drachen: " + dragon.getStrength());
 
+        //dice Button and change the Label
         diceButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //reset the moves made
-                movesMade = 0;
                 //get the dice outcome
                 diceOutcomeInt = Dice.roll();
                 //update the label
@@ -138,12 +137,13 @@ public class GUI implements MouseListener, KeyListener {
 
     //right side of the GUI: display the infos
     void rightSide(){
-
+        //add the labels
         top.add(knightStatus);
         top.add(dragonStatus);
         middle.add(info);
         bottom.add(action);
 
+        //add the labels to the panels
         knightStatus.add(knightLabel);
         dragonStatus.add(dragonLabel);
         info.add(infoLabel);
@@ -151,16 +151,18 @@ public class GUI implements MouseListener, KeyListener {
         action.add(diceOutcome);
 
 
-
+        //add the panels to the right side
         rightSide.add(top, BorderLayout.NORTH);
         rightSide.add(middle, BorderLayout.CENTER);
         rightSide.add(bottom, BorderLayout.SOUTH);
 
+        //add the Border
         knightStatus.setBorder(BorderFactory.createTitledBorder("Ritter"));
         dragonStatus.setBorder(BorderFactory.createTitledBorder("Drache"));
         info.setBorder(BorderFactory.createTitledBorder("Info"));
-        action.setBorder(BorderFactory.createTitledBorder("Ergebnis"));
+        action.setBorder(BorderFactory.createTitledBorder("Aktion"));
 
+        //add the right side to the window
         window.add(rightSide, BorderLayout.EAST);
 
     }
@@ -183,12 +185,10 @@ public class GUI implements MouseListener, KeyListener {
     //method for checking if the move is valid and if the player has won, then update the labels
     public boolean checkMove(){
         validMove = false;
-        //check if the player has moves left
-        if (movesMade <= diceOutcomeInt){
-            //check if the clicked on tile is a valid move
-            if (diceOutcomeInt >= 1){
+        //check if the clicked on tile is a valid move
+        if (diceOutcomeInt >= 1){
                 //check if the clicked on tile is within 1 tile of the current tile
-                if (clickedTile == playerTile + 1 || clickedTile == playerTile - 1 || clickedTile == playerTile + 8 || clickedTile == playerTile - 8 || clickedTile == playerTile + 7 || clickedTile == playerTile - 7 || clickedTile == playerTile + 6 || clickedTile == playerTile - 6) {
+            if (clickedTile == playerTile + 1 || clickedTile == playerTile - 1 || clickedTile == playerTile + 8 || clickedTile == playerTile - 8 || clickedTile == playerTile + 7 || clickedTile == playerTile - 7 || clickedTile == playerTile + 6 || clickedTile == playerTile - 6) {
                     validMove = true;
                 }
                 if (diceOutcomeInt >=2){
@@ -204,9 +204,13 @@ public class GUI implements MouseListener, KeyListener {
                     }
                 }
             }
-        } else {
+        else {
             //update the info label to say the move is invalid
             infoLabel.setText("Ungültiger Zug!");
+            validMove = false;
+        }
+        //so the player can't move again
+        if (diceButton.isEnabled() == true){
             validMove = false;
         }
         return validMove;
@@ -237,7 +241,6 @@ public class GUI implements MouseListener, KeyListener {
         System.out.println("Der " + currentPlayer.getName() + " ist auf dem Feld " + playerTile);
         System.out.println("Das Feld auf dem geklickt wurde ist " + clickedTile);
         System.out.println("Das Feld ist vom Typ " + Tile.getTileType(clickedTile));
-        System.out.println("Der " + currentPlayer.getName() + " hat " + movesMade + " von " + diceOutcomeInt + " Zügen gemacht");
         System.out.println("Der " + currentPlayer.getName() + " hat " + currentPlayer.getStrength() + " Spielstärke");
         System.out.println("Der " + currentPlayer.getOpponent().getName() + " hat " + currentPlayer.getOpponent().getStrength() + " Spielstärke");
         System.out.println("Der " + currentPlayer.getName() + " ist auf dem Feld " + playerTile);
@@ -246,15 +249,20 @@ public class GUI implements MouseListener, KeyListener {
     }
 
 
+    //method for checking if the player has won
     void hasWon(){
+        //check if the players are on the same tile
         if (currentPlayer.getX() == currentPlayer.getOpponent().getX() && currentPlayer.getY() == currentPlayer.getOpponent().getY()){
+            //check if the player has more strength than the opponent
             if (currentPlayer.getStrength() > currentPlayer.getOpponent().getStrength()){
+                //check if the player is the knight
                 if (currentPlayer == knight){
                     infoLabel.setText("Der Ritter hat gewonnen!");
                 } else {
                     infoLabel.setText("Der Drache hat gewonnen!");
                 }
             } else {
+                //check if the player is the knight
                 if (currentPlayer == knight){
                     infoLabel.setText("Der Drache hat gewonnen!");
                 } else {
@@ -262,14 +270,7 @@ public class GUI implements MouseListener, KeyListener {
                 }
             }
             diceButton.setEnabled(false);
-            movesMade = diceOutcomeInt + 1;
         }
-    }
-
-    void replay() {
-        //start a new game
-        Board board = new Board();
-        board.setVisible(true);
     }
 
 
@@ -288,7 +289,7 @@ public class GUI implements MouseListener, KeyListener {
         clickedTile = Tile.getTile(x, y);
         //check the players move
         checkMove();
-        if (checkMove() == true){
+        if (checkMove()){
             //move the player
             currentPlayer.move(x, y);
             //update the players strength
@@ -311,14 +312,6 @@ public class GUI implements MouseListener, KeyListener {
         hasWon();
     }
 
-    public static int getMouseX(){
-        return mouseX;
-    }
-
-    public static int getMouseY(){
-        return mouseY;
-    }
-
 
     @Override
     public void mousePressed(MouseEvent e) {
@@ -338,13 +331,9 @@ public class GUI implements MouseListener, KeyListener {
     public void mouseExited(MouseEvent e) {
     }
 
-    //check if the player presser r vor replay
+    //key listener (I tryed to do a replay funciton but it didnt work)
     @Override
     public void keyTyped(KeyEvent e) {
-        if (e.getKeyChar() == 'r'){
-            replay();
-            System.out.println("Replay");
-        }
     }
 
     @Override
@@ -355,5 +344,15 @@ public class GUI implements MouseListener, KeyListener {
     @Override
     public void keyReleased(KeyEvent e) {
 
+    }
+
+
+    //-------------------------------------getter and setter------------------------------------------------
+    public static int getMouseX(){
+        return mouseX;
+    }
+
+    public static int getMouseY(){
+        return mouseY;
     }
 }

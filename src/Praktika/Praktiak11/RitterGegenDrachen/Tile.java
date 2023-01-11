@@ -4,20 +4,20 @@ import java.awt.*;
 
 public class Tile{
     //for storing the tiletype
-
     private static int tileType;
-
     //for storing the tiles
     private static final int[] TILES = new int[49];
-
     //colors for the tiles
     private static final Color[] COLORS = {Color.GREEN, Color.BLUE, Color.RED, Color.BLACK};
 
+
     //getting the tile based on the coordinates
     public static int getTile(int x, int y) {
-        //return the tile number
+        //get the rows
         int row = y / 70;
+        //get the x Coordinates
         x = x / 70;
+        //get the tile, row * 7 because each row has 7 Tiles
         int tile = row * 7 + x;
         return tile;
     }
@@ -32,6 +32,7 @@ public class Tile{
         return coordinates;
     }
 
+    //for getting the modifiers of the tiles
     public static double getTileStrength(int clickedTile) {
         //get the modifier of the tile
         int tileType = getTileType(clickedTile);
@@ -73,6 +74,7 @@ public class Tile{
         return strength;
     }
 
+    //for creating the Tile and giving it a random type
     public static void makeTiles() {
         for (int i = 0; i < 49; i++) {
             setTileType(i);
@@ -86,8 +88,7 @@ public class Tile{
         }
     }
 
-
-
+    //for setting the tiletype
     private static void setTileType(int i) {
         tileType = (int) (Math.random() * 3);
         TILES[i] = tileType;
@@ -96,21 +97,14 @@ public class Tile{
         }
     }
 
+    //for getting the tiletype
     static int getTileType(int i) {
         tileType = TILES[i];
         return tileType;
     }
 
-    public static int getTileY(int tile){
-        int tyleY = tile / 7;
-        return tyleY;
-    }
 
-    public static int getTileX(int tile){
-        int tyleX = tile % 7;
-        return tyleX;
-    }
-
+//-----------------------------------getter and setter-----------------------------------------------
     public static int getTILES(int i){
         return TILES[i];
     }
